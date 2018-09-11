@@ -1,8 +1,8 @@
 #!/bin/bash
 
 #PBS -l nodes=1:ppn=3
-#PBS -l mem=30gb
-#PBS -l vmem=30gb
+#PBS -l mem=26gb
+#PBS -l vmem=26gb
 #PBS -l walltime=24:00:00
 
 
@@ -20,9 +20,9 @@ module load corsika/7.5r700_noPARALLEL
 
 cd $TMP_DIR
 
-echo "***************************************************************** " >${FILE}.log
-echo "This is the log file for simulation " >>${FILE}.log
-echo "***************************************************************** " >>${FILE}.log
+echo "***************************************************************** " >${FNAME}.log
+echo "This is the log file for simulation " >>${FNAME}.log
+echo "***************************************************************** " >>${FNAME}.log
 
 START_DATE=$(date +%s.%N)
 START_DATE1=$(date)
@@ -32,16 +32,16 @@ START_DATE1=$(date)
 for i in $(ls $TMP_DIR/${FNAME}-*.input)
 do
 	#echo inputs_Z$i.${MINUTE}>>simulation_${MINUTE}.log
-    corsika75700Linux_QGSJET_gheisha_root <$i>${FILE}.log&
+    corsika75700Linux_QGSJET_gheisha_root <$i>${FNAME}.log&
 done
 wait
 
 FINISH_DATE=$(date +%s.%N)
 FINISH_DATE1=$(date)
 DIFF=$(echo "$FINISH_DATE- $START_DATE" | bc)
-echo "Start Date: $START_DATE1 ">>${FILE}.log
-echo "Finish Date: $FINISH_DATE1" >>${FILE}.log
-echo "Total Time: $DIFF" >>${FILE}.log
+echo "Start Date: $START_DATE1 ">>${FNAME}.log
+echo "Finish Date: $FINISH_DATE1" >>${FNAME}.log
+echo "Total Time: $DIFF" >>${FNAME}.log
 
 cd $HOME
 mv $TMP_DIR/*.root $OUT_DIR/.
